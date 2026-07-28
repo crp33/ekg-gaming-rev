@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+
+# Playwright / Chromium
+test-results/
+playwright-report/
+playwright/.cache/
+.playwright/
+playwright-browsers/
+
+# Misc
+*.log
+.DS_Store
