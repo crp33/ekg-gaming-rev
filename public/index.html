@@ -3,14 +3,98 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Web App Tool</title>
+  <title>EKG Gaming Revenue Extraction</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <header class="app-header">
+    <div class="app-header-inner">
+      <div>
+        <h1>EKG Gaming Revenue Extraction</h1>
+        <p class="subtitle">Upload a report, extract structured figures, and review before export.</p>
+      </div>
+      <div class="auth-status-area">
+        <span class="auth-status" id="auth-status"></span>
+        <button type="button" id="sign-out-button" class="text-button" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+
   <main>
-    <h1>Web App Tool</h1>
-    <p>Backend status: <span id="status">checking…</span></p>
+    <section class="login-section" id="login-section" hidden>
+      <form class="login-card" id="login-form">
+        <h2>Sign in</h2>
+        <p class="panel-hint">This tool is restricted to logged-in users.</p>
+        <label class="field-label" for="login-email">Email</label>
+        <input class="text-input" type="email" id="login-email" autocomplete="email" required />
+        <label class="field-label" for="login-password">Password</label>
+        <input class="text-input" type="password" id="login-password" autocomplete="current-password" required />
+        <p class="status-message status-error" id="login-error" role="alert"></p>
+        <button type="submit" id="login-button" class="primary-button">Sign in</button>
+      </form>
+    </section>
+
+    <div id="tool-section" hidden>
+      <section class="upload-section" id="upload-section">
+        <div class="upload-box" id="upload-box" tabindex="0" role="button" aria-label="Upload a document">
+          <input type="file" id="file-input" class="visually-hidden"
+                 accept=".pdf,.html,.htm,.txt,.md,application/pdf,text/html,text/plain" />
+          <div class="upload-box-content">
+            <div class="upload-icon" aria-hidden="true">⬆</div>
+            <p class="upload-label">
+              Drop a document here, or <span class="link-text">browse files</span>
+            </p>
+            <p class="upload-hint">PDF, HTML, or plain text</p>
+            <p class="upload-filename" id="upload-filename"></p>
+          </div>
+        </div>
+
+        <div class="upload-actions">
+          <button type="button" id="process-button" class="primary-button" disabled>Process</button>
+          <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="results-section" id="results-section" hidden>
+        <div class="results-toolbar">
+          <div class="results-toolbar-left">
+            <h2>Results</h2>
+            <p class="flagged-summary" id="flagged-summary"></p>
+          </div>
+          <button type="button" id="download-button" class="secondary-button">Download Excel</button>
+        </div>
+
+        <div class="results-grid">
+          <div class="panel table-panel">
+            <h3>Extracted Data</h3>
+            <p class="panel-hint">Hover a cell for its source note. Flagged rows are highlighted.</p>
+            <div class="table-scroll">
+              <table id="results-table">
+                <thead></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel narrative-panel">
+            <h3>
+              Draft Narrative Summary
+              <span class="badge">EKG house style</span>
+            </h3>
+            <p class="panel-hint">For analyst review — not a final report.</p>
+            <div class="narrative-body" id="narrative-body"></div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
+
+  <!-- No bundler in this project (see README) — the Supabase JS client is
+       loaded as a prebuilt UMD script, Supabase's supported no-build-step
+       pattern. Pinned to match the server's @supabase/supabase-js version
+       (see package.json) so client/server behavior stays in sync. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+  <script src="/auth.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

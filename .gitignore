@@ -10,6 +10,9 @@ node_modules/
 dist/
 build/
 
+# Generated exports (e.g. from scripts/test-excel-export.js)
+*.xlsx
+
 # Playwright / Chromium
 test-results/
 playwright-report/

@@ -1,7 +1,473 @@
+:root {
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-border: #e2e5ea;
+  --color-text: #1a1d24;
+  --color-text-muted: #5b616e;
+  --color-primary: #1f3a5f;
+  --color-primary-hover: #16436e;
+  --color-accent: #0f6e5c;
+  --color-flag-bg: #fdecec;
+  --color-flag-border: #d64545;
+  --color-flag-text: #8a1f1f;
+  --color-ok-bg: #eaf6ee;
+  --color-ok-text: #1f6f3a;
+  --shadow-panel: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: system-ui, sans-serif;
-  max-width: 40rem;
-  margin: 4rem auto;
-  padding: 0 1rem;
-  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Header */
+
+.app-header {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.app-header-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.auth-status-area {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.auth-status {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.text-button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.text-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.app-header h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.app-header .subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+}
+
+/* Layout */
+
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* Upload */
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.upload-box {
+  width: 100%;
+  max-width: 640px;
+  background: var(--color-surface);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.upload-box:hover,
+.upload-box:focus-visible {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.upload-box.dragover {
+  border-color: var(--color-accent);
+  background: #f2f9f6;
+}
+
+.upload-box.has-file {
+  border-style: solid;
+  border-color: var(--color-accent);
+}
+
+.upload-icon {
+  font-size: 28px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.upload-label {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.link-text {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.upload-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.upload-filename {
+  margin: 12px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent);
+  min-height: 18px;
+}
+
+.upload-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Buttons */
+
+.primary-button,
+.secondary-button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.primary-button {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.primary-button:disabled {
+  background: #b9c0cc;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.secondary-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.secondary-button:disabled {
+  background: #b9c0cc;
+  cursor: not-allowed;
+}
+
+/* Status message */
+
+.status-message {
+  min-height: 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.status-info {
+  color: var(--color-text-muted);
+}
+
+.status-success {
+  color: var(--color-ok-text);
+}
+
+.status-error {
+  color: var(--color-flag-text);
+}
+
+/* Results */
+
+.results-section {
+  margin-top: 40px;
+}
+
+.results-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.results-toolbar h2 {
+  margin: 0 0 4px;
+  font-size: 19px;
+}
+
+.flagged-summary {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.flagged-summary-warn {
+  background: var(--color-flag-bg);
+  color: var(--color-flag-text);
+}
+
+.flagged-summary-ok {
+  background: var(--color-ok-bg);
+  color: var(--color-ok-text);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+  padding: 20px 22px 22px;
+}
+
+.panel h3 {
+  margin: 0 0 4px;
+  font-size: 15.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-hint {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: #eef1f6;
+  color: var(--color-text-muted);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* Table */
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  max-height: 560px;
+  overflow-y: auto;
+}
+
+#results-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+#results-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f1f3f6;
+  color: var(--color-text);
+  font-weight: 650;
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--color-border);
+  z-index: 1;
+}
+
+#results-table tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+#results-table tbody tr:hover {
+  background: #f8f9fb;
+}
+
+#results-table td.has-note {
+  border-bottom: 1px dotted #9aa1ad;
+  cursor: help;
+}
+
+/* Flagged rows — background + left border + bold note cell, so the signal
+   survives even on a projector where color alone might wash out. */
+#results-table tr.row-flagged td {
+  background: var(--color-flag-bg);
+}
+
+#results-table tr.row-flagged:hover td {
+  background: #fbdede;
+}
+
+#results-table tr.row-flagged td:first-child {
+  box-shadow: inset 4px 0 0 var(--color-flag-border);
+}
+
+#results-table td.flag-note-cell {
+  color: var(--color-flag-text);
+  font-weight: 600;
+  white-space: normal;
+  min-width: 260px;
+}
+
+/* Narrative */
+
+.narrative-body {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.narrative-body p {
+  margin: 0 0 14px;
+}
+
+.narrative-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Login */
+
+.login-section {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+/* An explicit `display` above beats the browser's default [hidden] rule
+   (author stylesheet vs. low-specificity UA stylesheet) — restate it
+   explicitly so setting the hidden attribute in JS actually hides this. */
+.login-section[hidden] {
+  display: none;
+}
+
+.login-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+  padding: 32px 30px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card h2 {
+  margin: 0 0 4px;
+  font-size: 19px;
+}
+
+.login-card .panel-hint {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: 12px 0 6px;
+}
+
+.text-input {
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  padding: 9px 11px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--color-text);
+}
+
+.text-input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.login-card .status-message {
+  margin: 10px 0 4px;
+}
+
+.login-card .primary-button {
+  margin-top: 14px;
 }

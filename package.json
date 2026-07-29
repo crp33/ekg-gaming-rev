@@ -13,7 +13,14 @@
     "dev": "node --watch server/index.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0",
+    "@supabase/supabase-js": "^2.111.0",
+    "cheerio": "^1.0.0",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "exceljs": "^4.4.0",
+    "express": "^4.19.2",
+    "multer": "^2.2.0",
+    "pdfjs-dist": "^6.2.108",
+    "playwright": "^1.62.0"
   }
 }
