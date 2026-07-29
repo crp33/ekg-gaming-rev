@@ -57,34 +57,37 @@ create table if not exists public.datasets (
   flagged_count integer not null default 0
 );
 
--- One row per extracted figure-row within a dataset. Column names mirror
--- server/config/ekg-schema.js (camelCase key -> snake_case column) —
--- server/modules/supabase.js derives insert column names from that file
--- automatically. If you add/remove a column in ekg-schema.js, mirror it
--- here; a mismatch surfaces as an insert error, not a silent data-shape
--- drift.
+-- One row per extracted figure-row within a dataset. The column block below
+-- is GENERATED from server/config/ekg-schema.js by scripts/generate-schema.js
+-- — run `npm run generate-schema` after adding/removing/renaming a column
+-- there, rather than hand-editing between the markers. Everything outside
+-- the markers (this table's id/created_at/dataset_id, source_notes,
+-- indexes, RLS policies, docs above) is hand-written and untouched by the
+-- generator.
 create table if not exists public.extracted_rows (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
   dataset_id uuid not null references public.datasets (id) on delete cascade,
 
-  state text,
-  reporting_period text,
-  operator text,
-  vertical text,
-  system_provider text,
-  handle numeric,
-  gross_gaming_revenue numeric,
-  promotional_deductions numeric,
-  taxable_revenue numeric,
-  hold_percent numeric,
-  tax_rate numeric,
-  tax_remitted numeric,
-  source_url text,
-  ingested_at timestamptz,
-  partial_period_adjustment_applied boolean,
-  partial_period_note text,
-  elevate_to_group_note text,
+  -- BEGIN GENERATED COLUMNS
+  state text, -- State
+  reporting_period text, -- Reporting Period
+  operator text, -- Operator
+  vertical text, -- Vertical
+  system_provider text, -- System Provider
+  handle numeric, -- Handle
+  gross_gaming_revenue numeric, -- Gross Gaming Revenue
+  promotional_deductions numeric, -- Promotional Deductions
+  taxable_revenue numeric, -- Taxable Revenue
+  hold_percent numeric, -- Hold %
+  tax_rate numeric, -- Tax Rate
+  tax_remitted numeric, -- Tax Remitted
+  source_url text, -- Source URL
+  ingested_at timestamptz, -- Ingested At
+  partial_period_adjustment_applied boolean, -- Partial Period Adjustment Applied
+  partial_period_note text, -- Partial Period Note
+  elevate_to_group_note text, -- Elevate to Group Note
+  -- END GENERATED COLUMNS
 
   -- Per-field source_note provenance (server/config/ekg-schema.js), keyed by
   -- the same camelCase field names, e.g. {"handle": "Line: \"Total Handle: ...\""}.

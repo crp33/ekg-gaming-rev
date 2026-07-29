@@ -37,8 +37,10 @@ function isConfigured() {
 }
 
 // camelCase ekg-schema.js key -> snake_case Postgres column name, e.g.
-// grossGamingRevenue -> gross_gaming_revenue. Column names in
-// supabase/schema.sql are hand-written to match this exactly.
+// grossGamingRevenue -> gross_gaming_revenue. Exported so
+// scripts/generate-schema.js can generate supabase/schema.sql's column list
+// from this exact function, instead of a second hand-maintained copy of the
+// mapping that could quietly drift from what insert calls below actually do.
 function toSnakeCase(camelKey) {
   return camelKey.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 }
@@ -117,4 +119,4 @@ async function saveDataset({ rows, narrativeSummary, uploadedBy, sourceFilename 
   return { saved: true, datasetId: dataset.id };
 }
 
-module.exports = { isConfigured, verifyAccessToken, saveDataset };
+module.exports = { isConfigured, verifyAccessToken, saveDataset, toSnakeCase };
