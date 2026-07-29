@@ -42,6 +42,8 @@ web-app-tool/
 │   ├── app.js                 # Upload/process/results/export UI
 │   └── style.css
 ├── scripts/                  # Manual/offline test scripts (no server needed)
+├── Dockerfile                 # Only needed for Playwright/Chromium on Railway — see below
+├── .dockerignore
 ├── .env                       # Local secrets (gitignored, not committed)
 ├── .env.example                # Documents required env vars
 ├── package.json
@@ -130,25 +132,39 @@ curl -X POST http://localhost:3000/api/extract-url \
   -d '{"url": "https://example.com/some-report"}'
 ```
 
+### Running Chromium in production
+
+Locally, `npx playwright install chromium` puts the browser binary in a
+user cache directory and it just works. In a deployed container that same
+binary also needs a pile of OS-level shared libraries (fonts, `libnss3`,
+`libgbm`, `libasound2`, ...) that aren't there by default. This repo's
+[`Dockerfile`](Dockerfile) solves that by building on Microsoft's official
+Playwright image, which ships Chromium with all of those already installed
+— see the comments in that file for why Railway's default Nixpacks builder
+is the flakier path here. Railway auto-detects the Dockerfile and uses it;
+no extra config needed. If you don't need URL scraping, delete
+`Dockerfile` and `.dockerignore` and Railway falls back to plain
+Nixpacks (`npm install` + `npm start`), which builds faster.
+
 ## Deploy to Railway
 
-1. Push this project to a GitHub repo.
-2. In Railway: **New Project → Deploy from GitHub repo**, select the repo.
-3. Set the **build command** to:
-   ```
-   npm install && npx playwright install --with-deps chromium
-   ```
-   (Required for `server/modules/playwright.js` to work in production —
-   Chromium's binary has to exist in the deployed container, not just be
-   `npm install`ed as a package. If you never plan to use URL scraping,
-   plain `npm install` still works fine; `/api/extract-url` will just return
-   a clear error instead of crashing.)
-4. Railway runs `npm start` automatically (from `package.json`).
-5. Under the service's **Variables** tab, add `ANTHROPIC_API_KEY` and,
+1. Push this project to a GitHub repo (private is fine — Railway just needs
+   read access once you authorize it).
+2. In Railway: **New Project → Deploy from GitHub repo**. Authorize
+   Railway's GitHub App if this is your first time, then pick the repo.
+3. Railway detects the `Dockerfile` in the repo root automatically and
+   builds from it (see "Running Chromium in production" above) — no build
+   command to configure.
+4. Under the service's **Variables** tab, add `ANTHROPIC_API_KEY` and,
    if using Supabase, `SUPABASE_URL` / `SUPABASE_ANON_KEY` /
-   `SUPABASE_SERVICE_ROLE_KEY` (same names as `.env.example`). Do **not**
-   commit `.env` — Railway variables are the production equivalent.
-6. Railway sets `PORT` automatically; `server/index.js` already reads
+   `SUPABASE_SERVICE_ROLE_KEY` (same names as `.env.example`). These live
+   only in Railway's dashboard — nothing in the repo or the Dockerfile ever
+   contains real secret values.
+5. Railway sets `PORT` automatically; `server/index.js` already reads
    `process.env.PORT` so no change is needed.
-7. Once deployed, Railway gives you a public URL — open it and confirm
-   `/api/health` returns `{"status":"ok"}`.
+6. Once deployed, open the service and confirm `<your-url>/api/health`
+   returns `{"status":"ok"}`. Under **Settings → Networking**, generate a
+   public domain if one isn't already assigned — that's the URL to share.
+7. By default, Railway redeploys automatically on every push to the
+   connected branch — no extra setup. Check **Settings → Deploy → Source**
+   if you ever need to change which branch triggers it.
