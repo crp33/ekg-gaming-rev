@@ -113,6 +113,53 @@ main {
   gap: 18px;
 }
 
+/* Input mode tabs (Upload file / Paste URL) */
+
+.input-mode-tabs {
+  display: flex;
+  gap: 4px;
+  background: #eef1f6;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.input-mode-tab {
+  border: none;
+  background: none;
+  padding: 7px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.input-mode-tab.active {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-panel);
+}
+
+.input-mode-panel {
+  width: 100%;
+  max-width: 640px;
+}
+
+.url-input-box {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: left;
+}
+
+.url-input-box .text-input {
+  width: 100%;
+  margin: 6px 0 8px;
+  font-size: 14.5px;
+}
+
 .upload-box {
   width: 100%;
   max-width: 640px;

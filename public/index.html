@@ -36,16 +36,31 @@
 
     <div id="tool-section" hidden>
       <section class="upload-section" id="upload-section">
-        <div class="upload-box" id="upload-box" tabindex="0" role="button" aria-label="Upload a document">
-          <input type="file" id="file-input" class="visually-hidden"
-                 accept=".pdf,.html,.htm,.txt,.md,application/pdf,text/html,text/plain" />
-          <div class="upload-box-content">
-            <div class="upload-icon" aria-hidden="true">⬆</div>
-            <p class="upload-label">
-              Drop a document here, or <span class="link-text">browse files</span>
-            </p>
-            <p class="upload-hint">PDF, HTML, or plain text</p>
-            <p class="upload-filename" id="upload-filename"></p>
+        <div class="input-mode-tabs" role="tablist" aria-label="Input method">
+          <button type="button" class="input-mode-tab active" id="tab-upload" role="tab" aria-selected="true" aria-controls="panel-upload">Upload file</button>
+          <button type="button" class="input-mode-tab" id="tab-url" role="tab" aria-selected="false" aria-controls="panel-url">Paste URL</button>
+        </div>
+
+        <div class="input-mode-panel" id="panel-upload" role="tabpanel">
+          <div class="upload-box" id="upload-box" tabindex="0" role="button" aria-label="Upload a document">
+            <input type="file" id="file-input" class="visually-hidden"
+                   accept=".pdf,.html,.htm,.txt,.md,application/pdf,text/html,text/plain" />
+            <div class="upload-box-content">
+              <div class="upload-icon" aria-hidden="true">⬆</div>
+              <p class="upload-label">
+                Drop a document here, or <span class="link-text">browse files</span>
+              </p>
+              <p class="upload-hint">PDF, HTML, or plain text</p>
+              <p class="upload-filename" id="upload-filename"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-mode-panel" id="panel-url" role="tabpanel" hidden>
+          <div class="url-input-box">
+            <label class="field-label" for="url-input">Regulator report URL</label>
+            <input type="url" id="url-input" class="text-input" placeholder="https://..." inputmode="url" autocomplete="off" />
+            <p class="upload-hint">Fetched with a real browser (handles JavaScript-rendered pages and PDF links)</p>
           </div>
         </div>
 

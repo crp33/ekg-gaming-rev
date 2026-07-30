@@ -34,7 +34,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 // JSON Schema constraint (below) and the methodology prompt, not sampling
 // parameters.
 const MODEL = 'claude-opus-5';
-const MAX_TOKENS = 16000;
+const MAX_TOKENS = 64000;
 
 const SKILL_PATH = path.join(__dirname, '..', '..', 'skills', 'ekg-extraction-skill.md');
 const PARTIAL_PERIOD_SKILL_PATH = path.join(
@@ -233,7 +233,13 @@ async function extractData(rawText) {
 
   let response;
   try {
-    response = await client.messages.create({
+    // Streamed rather than a single create() call: a real multi-operator,
+    // multi-vertical report can need well over MAX_TOKENS worth of
+    // structured output (verified against a live NJ DGE press release —
+    // it did), and a large non-streaming request risks an HTTP timeout
+    // before the response finishes. Streaming removes that ceiling; we
+    // still only care about the fully-assembled final message.
+    const stream = client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
       system: buildSystemPrompt(),
@@ -245,6 +251,7 @@ async function extractData(rawText) {
         },
       ],
     });
+    response = await stream.finalMessage();
   } catch (err) {
     return { ok: false, error: `Claude API request failed: ${err.message}` };
   }
